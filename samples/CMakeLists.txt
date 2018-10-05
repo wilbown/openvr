@@ -37,9 +37,6 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   # Binaries path for thirdparties are not generics so we try to guess their suffixes.
   set(WINDOWS_PATH_SUFFIXES win${PLATFORM} Win${PLATFORM} x${PLATFORM})
 
-  if(${PLATFORM} MATCHES 64)
-    message(WARNING "SDL x64 runtime binaries not provided on Windows.")
-  endif()
 endif()
 
 # -----------------------------------------------------------------------------
@@ -136,21 +133,22 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     )
     list(APPEND SDL2_LIBRARIES ${${lib}_LIBRARY})
   endforeach()
+  set(SDL2_INCLUDE_DIR ${THIRDPARTY_DIR}/sdl2-2.0.3/include)
 else()
   foreach(lib ${SDL_REQUIRED_LIBRARIES})
     find_library(${lib}_LIBRARY
       NAMES
         ${lib}
       PATHS
-        ${THIRDPARTY_DIR}/sdl2-2.0.3/bin
+        ${THIRDPARTY_DIR}/sdl2-2.0.8/lib
       PATH_SUFFIXES
         linux${PLATFORM}
         ${WINDOWS_PATH_SUFFIXES}
     )
     list(APPEND SDL2_LIBRARIES ${${lib}_LIBRARY})
   endforeach()
+  set(SDL2_INCLUDE_DIR ${THIRDPARTY_DIR}/sdl2-2.0.8/include)
 endif()
-set(SDL2_INCLUDE_DIR ${THIRDPARTY_DIR}/sdl2-2.0.3/include)
 
 ## Vulkan
 if(NOT (${CMAKE_SYSTEM_NAME} MATCHES "Darwin"))
@@ -159,13 +157,13 @@ if(NOT (${CMAKE_SYSTEM_NAME} MATCHES "Darwin"))
         vulkan-1
         vulkan
       PATHS
-        ${THIRDPARTY_DIR}/vulkan-1.0.49.0/lib
+        ${THIRDPARTY_DIR}/vulkan-1.1.82.1/lib
       PATH_SUFFIXES
         linux${PLATFORM}
         ${WINDOWS_PATH_SUFFIXES}
       NO_DEFAULT_PATH
   )
-  set(VULKAN_INCLUDE_DIR ${THIRDPARTY_DIR}/vulkan-1.0.49.0/include)
+  set(VULKAN_INCLUDE_DIR ${THIRDPARTY_DIR}/vulkan-1.1.82.1/include)
 endif()
 
 
